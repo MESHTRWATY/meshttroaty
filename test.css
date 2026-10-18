@@ -1,0 +1,767 @@
+/* الإعدادات العامة */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --green-dark: #176b45;
+    --green-main: #239764;
+    --green-light: #e9f8ef;
+    --green-soft: #f5fbf6;
+    --white: #ffffff;
+    --text-dark: #24382d;
+    --text-muted: #718078;
+    --border: #dcebe1;
+    --whatsapp: #25d366;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Cairo", sans-serif;
+    background: #f4f8f4;
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+
+/* رأس الصفحة */
+
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 5%;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 3px 18px rgba(23, 107, 69, 0.06);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    width: 55px;
+    height: 55px;
+    display: grid;
+    place-items: center;
+    border-radius: 17px;
+    background: var(--green-light);
+    font-size: 30px;
+}
+
+.brand h1 {
+    font-size: 29px;
+    color: var(--green-dark);
+    font-weight: 800;
+}
+
+.brand p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.header-whatsapp {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 19px;
+    border-radius: 12px;
+    color: white;
+    background: var(--green-dark);
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.25s;
+}
+
+.header-whatsapp:hover {
+    background: var(--green-main);
+    transform: translateY(-2px);
+}
+
+
+/* الشريط المتحرك */
+
+.welcome-bar {
+    overflow: hidden;
+    padding: 13px 0;
+    background: var(--green-dark);
+    color: white;
+}
+
+.ticker {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.ticker-track {
+    display: inline-block;
+    width: max-content;
+    padding-right: 100%;
+    animation: tickerMove 24s linear infinite;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+@keyframes tickerMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+
+
+/* تخطيط الصفحة: ثلاثة أقسام */
+
+.main-layout {
+    width: min(1600px, 96%);
+    margin: 32px auto;
+    display: grid;
+
+    /*
+       القسم الشمال: المنتجات الجافة
+       القسم الأوسط: الفورم
+       القسم اليمين: الخضار والفاكهة
+    */
+
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 1.2fr) minmax(0, 1fr);
+
+    gap: 24px;
+    align-items: start;
+}
+
+
+/* أقسام الصور */
+
+.products-side {
+    min-width: 0;
+    padding: 22px 16px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 8px 28px rgba(23, 107, 69, 0.06);
+}
+
+.products-side h2 {
+    color: var(--green-dark);
+    font-size: 21px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.side-description {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.product-card {
+    overflow: hidden;
+    min-width: 0;
+    background: var(--green-soft);
+    border: 1px solid #edf4ee;
+    border-radius: 13px;
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(23, 107, 69, 0.12);
+}
+
+.product-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: var(--green-light);
+}
+
+.product-card h3 {
+    padding: 9px 5px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--green-dark);
+}
+
+.side-note {
+    margin-top: 20px;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green-dark);
+    background: var(--green-light);
+    border-radius: 12px;
+}
+
+
+/* القسم الأوسط: الفورم */
+
+.form-section {
+    min-width: 0;
+    width: 100%;
+}
+
+.form-glow {
+    position: relative;
+    padding: 3px;
+    border-radius: 25px;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+/*
+   الإطار المضيء الدائري.
+   حركة الضوء حول حدود الفورم باستخدام CSS.
+*/
+
+.form-glow::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    width: 200%;
+    height: 200%;
+    left: -50%;
+    top: -50%;
+
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        transparent 35deg,
+        #a8ffcb 70deg,
+        #239764 115deg,
+        #d4ffe4 155deg,
+        transparent 200deg,
+        transparent 360deg
+    );
+
+    animation: borderGlow 5s linear infinite;
+}
+
+.form-glow::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 3px;
+    background: white;
+    border-radius: 22px;
+}
+
+@keyframes borderGlow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.form-card {
+    position: relative;
+    padding: 27px 25px 20px;
+    border-radius: 22px;
+    background: var(--white);
+}
+
+.form-heading {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.form-icon {
+    display: grid;
+    place-items: center;
+    margin: 0 auto 10px;
+    width: 65px;
+    height: 65px;
+    border-radius: 20px;
+    background: var(--green-light);
+    font-size: 34px;
+}
+
+.form-heading h2 {
+    font-size: 27px;
+    font-weight: 800;
+    color: var(--green-dark);
+}
+
+.form-heading p {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+
+/* حقول الفورم */
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.form-group input,
+.form-group textarea {
+    display: block;
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #d8e7dc;
+    border-radius: 12px;
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-dark);
+    background: #fbfdfb;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.form-group input {
+    min-height: 48px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #a2afa6;
+    font-size: 12px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--green-main);
+    box-shadow: 0 0 0 4px rgba(35, 151, 100, 0.11);
+    background: white;
+}
+
+
+/* زر تسجيل الطلب */
+
+.submit-button {
+    width: 100%;
+    min-height: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    border: none;
+    border-radius: 13px;
+
+    color: white;
+    background: linear-gradient(
+        135deg,
+        var(--green-dark),
+        var(--green-main)
+    );
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 800;
+
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(23, 107, 69, 0.2);
+}
+
+.submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.form-message {
+    margin-top: 13px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.8;
+}
+
+.form-message.success {
+    color: #177b45;
+}
+
+.form-message.error {
+    color: #c62828;
+}
+
+.form-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* جدول الطلبات */
+
+.orders-section {
+    width: min(1500px, 94%);
+    margin: 45px auto;
+    padding: 25px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(23, 107, 69, 0.05);
+}
+
+.orders-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.orders-heading h2 {
+    font-size: 23px;
+    color: var(--green-dark);
+    font-weight: 800;
+}
+
+.orders-heading p {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.orders-count {
+    padding: 8px 15px;
+    color: var(--green-dark);
+    background: var(--green-light);
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.orders-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    text-align: right;
+}
+
+.orders-table th {
+    padding: 14px 12px;
+    background: var(--green-dark);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.orders-table td {
+    padding: 13px 12px;
+    border-bottom: 1px solid #edf2ee;
+    font-size: 12px;
+    vertical-align: top;
+}
+
+.orders-table tbody tr:hover {
+    background: #f8fcf9;
+}
+
+.orders-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.empty-orders {
+    text-align: center;
+    padding: 30px !important;
+    color: var(--text-muted);
+}
+
+.order-details-cell {
+    min-width: 180px;
+    max-width: 280px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 8px;
+    color: #176b45;
+    background: #e9f8ef;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.whatsapp-order-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 11px;
+    border: none;
+    border-radius: 9px;
+    color: white;
+    background: #168f51;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.whatsapp-order-button:hover {
+    background: #116f3e;
+}
+
+.table-note {
+    margin-top: 15px;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+
+/* زر واتساب العائم */
+
+.floating-whatsapp {
+    position: fixed;
+    z-index: 1000;
+    left: 22px;
+    bottom: 22px;
+
+    display: grid;
+    place-items: center;
+
+    width: 60px;
+    height: 60px;
+
+    border-radius: 50%;
+    color: white;
+    background: var(--whatsapp);
+
+    box-shadow: 0 5px 22px rgba(37, 211, 102, 0.35);
+
+    text-decoration: none;
+    transition: transform 0.25s;
+}
+
+.floating-whatsapp:hover {
+    transform: scale(1.08);
+}
+
+
+/* تذييل الصفحة */
+
+.site-footer {
+    padding: 25px 15px;
+    text-align: center;
+    color: var(--green-dark);
+    background: white;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* استجابة الشاشات المتوسطة */
+
+@media (max-width: 1100px) {
+
+    .main-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+        gap: 20px;
+    }
+
+    .form-section {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        width: min(650px, 100%);
+        justify-self: center;
+    }
+
+    .supermarket-side {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .vegetables-side {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+}
+
+
+/* استجابة الموبايل */
+
+@media (max-width: 650px) {
+
+    .site-header {
+        padding: 14px 4%;
+        gap: 10px;
+    }
+
+    .brand {
+        gap: 8px;
+    }
+
+    .brand-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 23px;
+        border-radius: 13px;
+    }
+
+    .brand h1 {
+        font-size: 22px;
+    }
+
+    .brand p {
+        font-size: 10px;
+    }
+
+    .header-whatsapp {
+        padding: 9px 10px;
+        font-size: 11px;
+        gap: 5px;
+    }
+
+    .ticker-track {
+        font-size: 12px;
+    }
+
+    .main-layout {
+        width: 92%;
+        margin: 22px auto;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 22px;
+    }
+
+    .form-section {
+        grid-column: 1;
+        grid-row: 1;
+        width: 100%;
+    }
+
+    .supermarket-side {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .vegetables-side {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .form-card {
+        padding: 23px 17px 18px;
+    }
+
+    .form-heading h2 {
+        font-size: 23px;
+    }
+
+    .products-side {
+        padding: 20px 16px;
+    }
+
+    .products-side h2 {
+        font-size: 19px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .product-card h3 {
+        font-size: 13px;
+    }
+
+    .orders-section {
+        width: 92%;
+        padding: 17px 12px;
+        margin: 30px auto;
+    }
+
+    .orders-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .orders-heading h2 {
+        font-size: 20px;
+    }
+
+    .floating-whatsapp {
+        left: 14px;
+        bottom: 14px;
+        width: 53px;
+        height: 53px;
+    }
+
+}
+
+
+/* تقليل الحركة عند تفضيل المستخدم ذلك */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+
+}
