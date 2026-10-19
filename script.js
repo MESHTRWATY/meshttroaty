@@ -6,8 +6,7 @@
 
 const OWNER_WHATSAPP = "201289733313";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6iO8zlhbaq8B85gGuK8iH7N3ewrS241nEZa5ZTSNQfriECPTVG6zDYEKayyTgoI0yew/exec";
-
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwf9oU5NjeuaqDVecMJV43waJ67Vi3tGSKuhheAfuOAGptxEL5p_xSTbzpaWG47oQdW/exec';
 const ORDERS_KEY = "moshtrawaty_orders";
 const DRAFT_KEY = "moshtrawaty_draft";
 
