@@ -1,288 +1,135 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>مشترواتي | مشتريات بيتك بسهولة</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet">
-
-    <link rel="stylesheet" href="test.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مشترواتي | مشتروات بيتك بسهولة</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-    <!-- رأس الصفحة -->
-    <header class="site-header">
-        <div class="brand">
-            <div class="brand-icon">🛍️</div>
+  <!-- شريط التنقل العلوي -->
+  <header class="top-nav">
+    <div class="logo">
+      <span class="logo-icon">🛍️</span>
+      <span class="logo-title">مشترواتي</span>
+      <span class="logo-subtitle">مكان واحد</span>
+    </div>
+    <a href="https://wa.me/201289733313" target="_blank" class="whatsapp-nav-btn">
+      <span>تواصل واتساب</span>
+      <span>💬</span>
+    </a>
+  </header>
 
-            <div>
-                <h1>مشترواتي</h1>
-                <p>كل طلبات بيتك في مكان واحد</p>
-            </div>
+  <!-- شريط المميزات -->
+  <div class="features-bar">
+    <span>✨ خضار وفاكهة طازة</span>
+    <span>🛒 مشتروات بيتك بسهولة وراحة</span>
+    <span>⚡ أسرع توصيل</span>
+  </div>
+
+  <!-- الحاوية الرئيسية -->
+  <main class="main-container">
+    
+    <!-- القسم الأيمن: السوبر ماركت -->
+    <aside class="side-card">
+      <div class="card-header">
+        <h3>🛒 السوبر ماركت</h3>
+        <p>كل احتياجات مطبخك في طلب واحد</p>
+      </div>
+      <div class="grid-images">
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1551462147-37885acc36f1?auto=format&fit=crop&w=300&q=80" alt="مكرونة">
+          <span>مكرونة</span>
+        </div>
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=300&q=80" alt="أرز">
+          <span>أرز</span>
+        </div>
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=300&q=80" alt="دقيق وحبوب">
+          <span>دقيق وحبوب</span>
+        </div>
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=300&q=80" alt="منتجات غذائية">
+          <span>منتجات غذائية</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- القسم الأوسط: نموذج الطلب -->
+    <section class="form-wrapper">
+      <div class="form-header">
+        <div class="form-icon">🛍️</div>
+        <h2>اطلب مشترياتك</h2>
+        <p>املا البيانات واكتب كل اللي محتاجه</p>
+      </div>
+
+      <!-- مكان ظهور رسالة التأكيد -->
+      <div id="message" class="message-box"></div>
+
+      <form id="orderForm">
+        <div class="form-group">
+          <label for="customerName">اسم العميل</label>
+          <input type="text" id="customerName" name="customerName" placeholder="اكتب اسمك بالكامل" required>
         </div>
 
-        <a class="header-whatsapp"
-           href="https://wa.me/201289733313"
-           target="_blank"
-           rel="noopener noreferrer">
-            <span>☘</span>
-            تواصل واتساب
-        </a>
-    </header>
-
-
-    <!-- شريط ترحيبي -->
-    <section class="welcome-bar">
-        <div class="ticker">
-            <div class="ticker-track">
-                🛒 مشتريات بيتك بسهولة وراحة
-                &nbsp; ✨ &nbsp;
-                🥬 خضار وفاكهة
-                &nbsp; ✨ &nbsp;
-                🛍️ كل احتياجاتك في طلب واحد
-                &nbsp; ✨ &nbsp;
-                🛒 مشتريات بيتك بسهولة وراحة
-                &nbsp; ✨ &nbsp;
-                🥬 خضار وفاكهة
-                &nbsp; ✨ &nbsp;
-            </div>
+        <div class="form-group">
+          <label for="phone">رقم التليفون</label>
+          <input type="tel" id="phone" name="phone" placeholder="01xxxxxxxxx" required>
         </div>
+
+        <div class="form-group">
+          <label for="projectName">اسم المشروع</label>
+          <input type="text" id="projectName" name="projectName" placeholder="اسم الكومبوند أو المشروع" required>
+        </div>
+
+        <div class="form-group">
+          <label for="buildingNumber">رقم العمارة</label>
+          <input type="text" id="buildingNumber" name="buildingNumber" placeholder="اكتب رقم العمارة" required>
+        </div>
+
+        <div class="form-group">
+          <label for="orderDetails">المشتريات المطلوبة</label>
+          <textarea id="orderDetails" name="orderDetails" rows="4" placeholder="مثال: كيلو طماطم، كيلو بطاطس، كيس مكرونة..." required></textarea>
+        </div>
+
+        <button type="submit" id="submitButton" class="submit-btn">
+          <span>🛒</span> تسجيل الطلب
+        </button>
+      </form>
+      <div class="footer-note">💚 راحتك تهمنا</div>
     </section>
 
-
-    <!-- المحتوى الرئيسي: ثلاثة أقسام -->
-    <main class="main-layout">
-
-        <!-- القسم الأيسر: السوبر ماركت -->
-        <aside class="products-side supermarket-side">
-
-            <h2>🛒 السوبر ماركت</h2>
-
-            <p class="side-description">
-                كل احتياجات مطبخك في طلب واحد
-            </p>
-
-            <div class="products-grid">
-
-                <article class="product-card">
-                    <img
-                        src="https://images.unsplash.com/photo-1551462147-ff29053bfc14?auto=format&fit=crop&w=500&q=80"
-                        alt="مكرونة"
-                        loading="lazy">
-
-                    <h3>مكرونة</h3>
-                </article>
-
-                <article class="product-card">
-                    <img
-                        src="https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=500&q=80"
-                        alt="أرز"
-                        loading="lazy">
-
-                    <h3>أرز</h3>
-                </article>
-
-                <article class="product-card">
-                    <img
-                        src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=500&q=80"
-                        alt="دقيق وحبوب"
-                        loading="lazy">
-
-                    <h3>دقيق وحبوب</h3>
-                </article>
-
-                <article class="product-card">
-                    <img
-                        src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=500&q=80"
-                        alt="منتجات غذائية"
-                        loading="lazy">
-
-                    <h3>منتجات غذائية</h3>
-                </article>
-
-            </div>
-
-            <div class="side-note">
-                🛍️ اكتب كل احتياجاتك في الطلب
-            </div>
-
-        </aside>
-
-
-        <!-- القسم الأوسط: نموذج الطلب -->
-        <section class="form-section">
-
-            <div class="form-glow">
-
-                <div class="form-card">
-
-                    <div class="form-heading">
-
-                        <div class="form-icon">🛍️</div>
-
-                        <h2>اطلب مشترياتك</h2>
-
-                        <p>
-                            املا البيانات واكتب كل اللي محتاجه
-                        </p>
-
-                    </div>
-
-
-                    <form id="orderForm">
-
-                        <div class="form-group">
-                            <label for="customerName">
-                                اسم العميل
-                            </label>
-
-                            <input
-                                type="text"
-                                id="customerName"
-                                name="customerName"
-                                placeholder="اكتب اسمك بالكامل"
-                                autocomplete="name"
-                                required>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="phone">
-                                رقم التليفون
-                            </label>
-
-                            <input
-                                type="tel"
-                                id="phone"
-                                name="phone"
-                                placeholder="01xxxxxxxxx"
-                                inputmode="tel"
-                                autocomplete="tel"
-                                required>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="projectName">
-                                اسم المشروع
-                            </label>
-
-                            <input
-                                type="text"
-                                id="projectName"
-                                name="projectName"
-                                placeholder="اسم الكمبوند أو المشروع"
-                                required>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="buildingNumber">
-                                رقم العمارة
-                            </label>
-
-                            <input
-                                type="text"
-                                id="buildingNumber"
-                                name="buildingNumber"
-                                placeholder="اكتب رقم العمارة"
-                                required>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="orderDetails">
-                                المشتريات المطلوبة
-                            </label>
-
-                            <textarea
-                                id="orderDetails"
-                                name="orderDetails"
-                                rows="5"
-                                placeholder="مثال: كيلو طماطم، كيلو بطاطس، كيس مكرونة..."
-                                required></textarea>
-                        </div>
-
-
-                        <button
-                            type="submit"
-                            id="submitButton"
-                            class="submit-button">
-
-                            <span>🛒</span>
-                            تسجيل الطلب
-
-                        </button>
-
-                        <p
-                            id="message"
-                            class="form-message"
-                            role="status"
-                            aria-live="polite">
-                        </p>
-
-                    </form>
-
-                    <div class="form-footer">
-                        💚 راحتك تهمنا
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- القسم الأيمن: الخضار والفاكهة -->
-        <aside class="products-side vegetables-side">
-
-            <h2>🥬 الخضار والفاكهة</h2>
-
-            <p class="side-description">
-                طازة على قد احتياجات بيتك
-            </p>
-
-            <div class="products-grid">
-
-                <article class="product-card">
-                    <img
-                        src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?auto=format&fit=crop&w=500&q=80"
-                        alt="طماطم"
-                        loading="lazy">
-
-                    <h3>طماطم</h3>
-                </article>
-
-                <article class="product-card">
-                    <img
-                        src="https://images.unsplash.com/photo-1447175008436-054170c2e979?auto=format&fit=crop&w=500&q=80"
-                        alt="جزر وخضروات"
-                        loading="lazy">
-
-                    <h3>جزر وخضار</h3>
-                </article>
-
-                <article class="product-card">
-                    <img
-                        src="https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?auto=format&fit=crop&w=500&q=80"
-                        alt="خيار"
-                        loading="lazy">
-
-                    <h3>خيار</h3>
-                </article>
-
-                <article class="product-card">
-                    <img
-                        src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=500&q=80"
-                        alt="بطاطس"
-                        loading="lazy">
-
-                    <h3>بطاط
+    <!-- القسم الأيسر: الخضار والفاكهة -->
+    <aside class="side-card">
+      <div class="card-header">
+        <h3>🥬 الخضار والفاكهة</h3>
+        <p>طازة على قد احتياجات بيتك</p>
+      </div>
+      <div class="grid-images">
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=300&q=80" alt="طماطم">
+          <span>طماطم</span>
+        </div>
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=300&q=80" alt="جزر وخضار">
+          <span>جزر وخضار</span>
+        </div>
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1449339854873-750e6df51301?auto=format&fit=crop&w=300&q=80" alt="خيار">
+          <span>خيار</span>
+        </div>
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=300&q=80" alt="بطاطس">
+          <span>بطاطس</span>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
