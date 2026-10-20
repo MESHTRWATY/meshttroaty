@@ -1,68 +1,55 @@
 "use strict";
 
-// =====================================
-// إعدادات تطبيق مشترواتي
-// =====================================
+// رابط استقبال الطلبات
+const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbyCMtQ8EIANarYnmZEk16hgKg_fQNGGVwf8y8CL7GX9ichAlerRbqA6wm5Kfu8hhmS83g/exec";
 
+// رقم واتساب صاحب التطبيق
 const OWNER_WHATSAPP = "201289733313";
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwf9oU5NjeuaqDVecMJV43waJ67Vi3tGSKuhheAfuOAGptxEL5p_xSTbzpaWG47oQdW/exec';
-const ORDERS_KEY = "moshtrawaty_orders";
-const DRAFT_KEY = "moshtrawaty_draft";
-
-// =====================================
 // عناصر الصفحة
-// =====================================
-
-const orderForm = document.getElementById("orderForm");
-
-const customerNameInput = document.getElementById("customerName");
-const phoneInput = document.getElementById("phone");
-const projectNameInput = document.getElementById("projectName");
-const buildingNumberInput = document.getElementById("buildingNumber");
-const orderDetailsInput = document.getElementById("orderDetails");
-
+const form = document.getElementById("orderForm");
 const messageElement = document.getElementById("message");
 const submitButton = document.getElementById("submitButton");
 
 const ordersTableBody = document.getElementById("ordersTableBody");
 const ordersCount = document.getElementById("ordersCount");
 
-// =====================================
-// التخزين المحلي
-// =====================================
+const ORDERS_KEY = "moshtrawaty_orders";
+const DRAFT_KEY = "moshtrawaty_draft";
 
+
+// قراءة الطلبات المحفوظة محليًا
 function getOrders() {
     try {
-        const savedOrders = localStorage.getItem(ORDERS_KEY);
+        const orders = JSON.parse(
+            localStorage.getItem(ORDERS_KEY) || "[]"
+        );
 
-        if (!savedOrders) return [];
-
-        const parsedOrders = JSON.parse(savedOrders);
-
-        return Array.isArray(parsedOrders) ? parsedOrders : [];
-    } catch (error) {
-        console.error("تعذر قراءة الطلبات:", error);
+        return Array.isArray(orders) ? orders : [];
+    } catch {
         return [];
     }
 }
 
+
+// حفظ الطلبات محليًا
 function saveOrders(orders) {
     try {
         localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
         return true;
-    } catch (error) {
-        console.error("تعذر حفظ الطلبات:", error);
+    } catch {
         return false;
     }
 }
 
-// =====================================
-// رسائل الحالة
-// =====================================
 
+// إظهار الرسائل
 function showMessage(text, type) {
-    if (!messageElement) return;
+    if (!messageElement) {
+        alert(text);
+        return;
+    }
 
     messageElement.textContent = text;
     messageElement.classList.remove("success", "error");
@@ -72,11 +59,9 @@ function showMessage(text, type) {
     }
 }
 
-// =====================================
-// التحقق من رقم التليفون المصري
-// =====================================
 
-function normalizeEgyptianPhone(phone) {
+// التحقق من رقم التليفون المصري
+function normalizePhone(phone) {
     let value = phone.replace(/[\s\-()]/g, "");
 
     if (value.startsWith("+20")) {
@@ -90,148 +75,60 @@ function normalizeEgyptianPhone(phone) {
     return value;
 }
 
-function isValidEgyptianPhone(phone) {
-    return /^01[0125][0-9]{8}$/.test(
-        normalizeEgyptianPhone(phone)
-    );
+
+function isValidPhone(phone) {
+    return /^01[0125][0-9]{8}$/.test(normalizePhone(phone));
 }
 
-// =====================================
-// حفظ واسترجاع مسودة النموذج
-// =====================================
 
-function saveDraft() {
-    const draft = {
-        customerName: customerNameInput.value,
-        phone: phoneInput.value,
-        projectName: projectNameInput.value,
-        buildingNumber: buildingNumberInput.value,
-        orderDetails: orderDetailsInput.value
-    };
-
-    try {
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-    } catch (error) {
-        console.warn("تعذر حفظ المسودة:", error);
-    }
-}
-
-function restoreDraft() {
-    try {
-        const savedDraft = localStorage.getItem(DRAFT_KEY);
-
-        if (!savedDraft) return;
-
-        const draft = JSON.parse(savedDraft);
-
-        customerNameInput.value = draft.customerName || "";
-        phoneInput.value = draft.phone || "";
-        projectNameInput.value = draft.projectName || "";
-        buildingNumberInput.value = draft.buildingNumber || "";
-        orderDetailsInput.value = draft.orderDetails || "";
-    } catch (error) {
-        console.warn("تعذر استرجاع المسودة:", error);
-    }
-}
-
-orderForm.addEventListener("input", saveDraft);
-
-// =====================================
 // إنشاء رقم الطلب
-// =====================================
-
 function createOrderId() {
-    const now = new Date();
-
-    const datePart = [
-        now.getFullYear(),
-        String(now.getMonth() + 1).padStart(2, "0"),
-        String(now.getDate()).padStart(2, "0")
-    ].join("");
-
-    const timePart = [
-        String(now.getHours()).padStart(2, "0"),
-        String(now.getMinutes()).padStart(2, "0"),
-        String(now.getSeconds()).padStart(2, "0")
-    ].join("");
-
-    const randomPart = Math.floor(100 + Math.random() * 900);
-
-    return `MS-${datePart}-${timePart}-${randomPart}`;
+    return "MS-" + Date.now() + "-" +
+        Math.floor(100 + Math.random() * 900);
 }
 
-// =====================================
-// تنسيق التاريخ
-// =====================================
 
-function formatDate(dateString) {
-    const date = new Date(dateString);
-
-    if (Number.isNaN(date.getTime())) {
-        return "غير معروف";
-    }
-
-    return date.toLocaleString("ar-EG", {
-        dateStyle: "short",
-        timeStyle: "short"
-    });
-}
-
-// =====================================
-// حماية النصوص
-// =====================================
-
+// حماية النصوص عند عرضها في الجدول
 function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, function (character) {
-        const entities = {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#039;"
-        };
-
-        return entities[character];
-    });
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
 }
 
-// =====================================
-// رسائل واتساب
-// =====================================
 
-function createWhatsAppMessage(order) {
-    return [
-        "🛍️ *طلب جديد من تطبيق مشترواتي*",
-        "",
-        `رقم الطلب: ${order.id}`,
-        `اسم العميل: ${order.customerName}`,
-        `رقم التليفون: ${order.phone}`,
-        `اسم المشروع: ${order.projectName}`,
-        `رقم العمارة: ${order.buildingNumber}`,
-        "",
-        "📝 *المشتريات المطلوبة:*",
-        order.orderDetails,
-        "",
-        `وقت التسجيل: ${formatDate(order.createdAt)}`
-    ].join("\n");
-}
-
+// إنشاء رسالة واتساب
 function createWhatsAppLink(order) {
-    return `https://wa.me/${OWNER_WHATSAPP}?text=${
-        encodeURIComponent(createWhatsAppMessage(order))
-    }`;
+    const text = [
+        "🛍️ طلب من تطبيق مشترواتي",
+        "",
+        "رقم الطلب: " + order.id,
+        "اسم العميل: " + order.customerName,
+        "رقم التليفون: " + order.phone,
+        "اسم المشروع: " + order.projectName,
+        "رقم العمارة: " + order.buildingNumber,
+        "",
+        "المشتريات المطلوبة:",
+        order.orderDetails
+    ].join("\n");
+
+    return "https://wa.me/" + OWNER_WHATSAPP +
+        "?text=" + encodeURIComponent(text);
 }
 
-// =====================================
-// عرض الطلبات
-// =====================================
 
+// عرض الطلبات المحلية في الجدول
 function renderOrders() {
+    if (!ordersTableBody) return;
+
     const orders = getOrders();
 
-    if (!ordersTableBody || !ordersCount) return;
-
-    ordersCount.textContent = `${orders.length} طلب`;
+    if (ordersCount) {
+        ordersCount.textContent = orders.length + " طلب";
+    }
 
     if (orders.length === 0) {
         ordersTableBody.innerHTML = `
@@ -246,7 +143,7 @@ function renderOrders() {
 
     ordersTableBody.innerHTML = "";
 
-    [...orders].reverse().forEach(function (order) {
+    [...orders].reverse().forEach(order => {
         const row = document.createElement("tr");
 
         row.innerHTML = `
@@ -256,11 +153,7 @@ function renderOrders() {
             <td>${escapeHTML(order.projectName)}</td>
             <td>${escapeHTML(order.buildingNumber)}</td>
             <td class="order-details-cell">${escapeHTML(order.orderDetails)}</td>
-            <td>
-                <span class="status-badge">
-                    ${escapeHTML(order.status || "جديد")}
-                </span>
-            </td>
+            <td><span class="status-badge">جديد</span></td>
             <td>
                 <a
                     class="whatsapp-order-button"
@@ -276,137 +169,183 @@ function renderOrders() {
     });
 }
 
-// =====================================
-// إرسال الطلب إلى Google Sheets
-// =====================================
 
-async function sendOrderToGoogleSheets(order) {
-    const formData = new URLSearchParams();
+// حفظ مسودة الطلب
+function saveDraft() {
+    if (!form) return;
 
-    formData.append("id", order.id);
-    formData.append("customerName", order.customerName);
-    formData.append("phone", order.phone);
-    formData.append("projectName", order.projectName);
-    formData.append("buildingNumber", order.buildingNumber);
-    formData.append("orderDetails", order.orderDetails);
-    formData.append("createdAt", order.createdAt);
-    formData.append("status", order.status);
+    const draft = {
+        customerName: form.customerName.value,
+        phone: form.phone.value,
+        projectName: form.projectName.value,
+        buildingNumber: form.buildingNumber.value,
+        orderDetails: form.orderDetails.value
+    };
 
-    // Apps Script قد لا يسمح للمتصفح بقراءة الرد بسبب CORS.
-    // لذلك لا نعتبر نجاح fetch وحده تأكيدًا على التسجيل.
-    await fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData
+    try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    } catch (error) {
+        console.warn("تعذر حفظ المسودة", error);
+    }
+}
+
+
+// استرجاع مسودة الطلب
+function restoreDraft() {
+    if (!form) return;
+
+    try {
+        const draft = JSON.parse(
+            localStorage.getItem(DRAFT_KEY) || "null"
+        );
+
+        if (!draft) return;
+
+        form.customerName.value = draft.customerName || "";
+        form.phone.value = draft.phone || "";
+        form.projectName.value = draft.projectName || "";
+        form.buildingNumber.value = draft.buildingNumber || "";
+        form.orderDetails.value = draft.orderDetails || "";
+    } catch (error) {
+        console.warn("تعذر استرجاع المسودة", error);
+    }
+}
+
+
+// ربط النموذج
+if (form) {
+    form.addEventListener("input", saveDraft);
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const customerName =
+            form.customerName.value.trim();
+
+        const phone =
+            normalizePhone(form.phone.value.trim());
+
+        const projectName =
+            form.projectName.value.trim();
+
+        const buildingNumber =
+            form.buildingNumber.value.trim();
+
+        const orderDetails =
+            form.orderDetails.value.trim();
+
+
+        // التحقق من البيانات
+        if (
+            !customerName ||
+            !phone ||
+            !projectName ||
+            !buildingNumber ||
+            !orderDetails
+        ) {
+            showMessage("من فضلك املا كل البيانات المطلوبة.", "error");
+            return;
+        }
+
+        if (!isValidPhone(phone)) {
+            showMessage(
+                "رقم التليفون غير صحيح. راجع الرقم وحاول تاني.",
+                "error"
+            );
+            return;
+        }
+
+
+        const order = {
+            id: createOrderId(),
+            customerName,
+            phone,
+            projectName,
+            buildingNumber,
+            orderDetails,
+            createdAt: new Date().toISOString(),
+            status: "جديد"
+        };
+
+
+        // منع الضغط المتكرر أثناء الإرسال
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "جاري إرسال الطلب...";
+        }
+
+        showMessage("جاري إرسال طلبك...", "");
+
+
+        try {
+            // تجهيز البيانات لإرسالها إلى Google Apps Script
+            const formData = new FormData();
+
+            formData.append("id", order.id);
+            formData.append("customerName", order.customerName);
+            formData.append("phone", order.phone);
+            formData.append("projectName", order.projectName);
+            formData.append("buildingNumber", order.buildingNumber);
+            formData.append("orderDetails", order.orderDetails);
+            formData.append("createdAt", order.createdAt);
+            formData.append("status", order.status);
+
+
+            // إرسال الطلب إلى الخادم
+            await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: formData,
+                mode: "no-cors"
+            });
+
+
+            /*
+              مع no-cors لا يستطيع المتصفح قراءة استجابة الخادم.
+              لذلك نجاح fetch وحده لا يثبت أن الطلب وصل إلى الشيت.
+              سنعرض رسالة توضح أن الإرسال بدأ، ثم يلزم التحقق من الشيت.
+            */
+
+            showMessage(
+                "تم إرسال الطلب. راجع Google Sheets للتأكد من تسجيله.",
+                "success"
+            );
+
+
+            // حفظ نسخة محلية بعد محاولة الإرسال
+            const orders = getOrders();
+            orders.push(order);
+
+            if (saveOrders(orders)) {
+                renderOrders();
+            }
+
+
+            form.reset();
+
+            try {
+                localStorage.removeItem(DRAFT_KEY);
+            } catch (error) {
+                console.warn(error);
+            }
+
+        } catch (error) {
+            console.error("خطأ أثناء إرسال الطلب:", error);
+
+            showMessage(
+                "تعذر إرسال الطلب. راجع اتصال الإنترنت وحاول مرة أخرى.",
+                "error"
+            );
+
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.innerHTML = "<span>🛒</span> تسجيل الطلب";
+            }
+        }
     });
 }
 
-// =====================================
-// تسجيل طلب جديد
-// =====================================
 
-orderForm.addEventListener("submit", async function (event) {
-    event.preventDefault();
-
-    if (submitButton && submitButton.disabled) return;
-
-    const customerName = customerNameInput.value.trim();
-    const phone = normalizeEgyptianPhone(phoneInput.value.trim());
-    const projectName = projectNameInput.value.trim();
-    const buildingNumber = buildingNumberInput.value.trim();
-    const orderDetails = orderDetailsInput.value.trim();
-
-    if (
-        !customerName ||
-        !phone ||
-        !projectName ||
-        !buildingNumber ||
-        !orderDetails
-    ) {
-        showMessage("من فضلك املا كل البيانات المطلوبة.", "error");
-        return;
-    }
-
-    if (!isValidEgyptianPhone(phone)) {
-        showMessage(
-            "رقم التليفون المصري غير صحيح. راجع الرقم وحاول تاني.",
-            "error"
-        );
-
-        phoneInput.focus();
-        return;
-    }
-
-    const order = {
-        id: createOrderId(),
-        customerName,
-        phone,
-        projectName,
-        buildingNumber,
-        orderDetails,
-        createdAt: new Date().toISOString(),
-        status: "جديد"
-    };
-
-    // نحفظ الطلب محليًا أولًا
-    const orders = getOrders();
-    orders.push(order);
-
-    if (!saveOrders(orders)) {
-        showMessage(
-            "حصلت مشكلة في حفظ الطلب على الجهاز. جرب تاني.",
-            "error"
-        );
-        return;
-    }
-
-    if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = "جاري إرسال الطلب...";
-    }
-
-    try {
-        await sendOrderToGoogleSheets(order);
-
-        // تنبيه مهم: no-cors لا يؤكد أن Google Sheets سجّل الطلب.
-        showMessage(
-            "تم إرسال محاولة تسجيل الطلب. افتح Google Sheets وتأكد إن الطلب ظهر في صف جديد.",
-            "success"
-        );
-
-        orderForm.reset();
-
-        try {
-            localStorage.removeItem(DRAFT_KEY);
-        } catch (error) {
-            console.warn("تعذر حذف المسودة:", error);
-        }
-
-        renderOrders();
-
-        document.querySelector(".orders-section")?.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-
-    } catch (error) {
-        console.error("تعذر إرسال الطلب إلى Google Sheets:", error);
-
-        showMessage(
-            "تم حفظ الطلب على الجهاز، لكن تعذر إرسال الطلب. راجع الاتصال وحاول مرة أخرى.",
-            "error"
-        );
-    } finally {
-        if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.textContent = "تسجيل الطلب";
-        }
-    }
-});
-
-// =====================================
-// بدء تشغيل التطبيق
-// =====================================
-
+// تشغيل الصفحة
 restoreDraft();
 renderOrders();
